@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+ {% block content %}
+ <main>
+     <div class="container my-5">
+       <div class="row justify-content-center">
+         <div class="col-md-8">
+           <div class="card h-100 shadow-lg border-0">
+             <div class="position-relative overflow-hidden">
+               <!-- Product image with animation -->
+               <img src="{{product.image.url}}" class="card-img-top img-animate" alt="Product Image">
+             </div>
+             <div class="card-body">
+                 <div class="clearfix mb-3">
+                     {% if product.is_sale %}
+                     <div class="d-flex justify-content-between align-items-center">
+                         <span class="badge rounded-pill bg-primary fs-4">Sale!</span>
+                         <div>
+                             <span class="price-hp fs-4">{{product.sale_price}}</span>
+                             <span class="price-hp fs-4 ms-2" style="text-decoration: line-through;">{{product.price}}</span>
+                         </div>
+                     </div>
+                     {% else %}
+                     <div class="d-flex justify-content-end">
+                         <span class="price-hp fs-4">{{product.price}}</span>
+                     </div>
+                     {% endif %}
+                 </div>
+                 
+               <h3 class="card-title">{{product.product_name}}</h3>
+               <p class="card-text">{{product.description}}</p>
+               
+                 <div class="row justify-content-center">
+                     <div class="col-md-3">
+                         <div class="d-flex align-items-center">
+                             <!-- Label -->
+                             <label for="item-count" class="me-2 fw-bold">Amount</label>
+                             <!-- Dropdown selection -->
+                             <select class="form-select form-select-sm me-2" id="item-count" style="width: auto;">
+                                 <option value="1">1</option>
+                                 <option value="2">2</option>
+                                 <option value="3">3</option>
+                                 <option value="4">4</option>
+                                 <option value="5">5</option>
+                             </select>
+                         </div>
+                     </div>
+                 </div>
+               <div class="text-center my-4">
+                 <a href="#" class="btn btn-warning btn-lg">Buy now</a>
+                 <button type='button' value='{{ product.id }}' class='btn btn-warning btn-lg fs-5 ms-5' id='add-cart'>Add to cart</button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+ </main>
+ 
+ <script>
+   // Update Cart Function
+   $(document).on('click', '#add-cart', function(e){
+       e.preventDefault();
+       $.ajax({
+           type: "POST",
+           url: "{% url 'cart_add' %}",
+           data: {
+               product_id: $(this).val(),
+               product_qty: $('#item-count option:selected').text(),
+               csrfmiddlewaretoken: '{{ csrf_token }}',
+               action: 'post',
+           },
+           success: function(json){
+               if (json.redirect) {
+                   window.location.href = "{% url 'login' %}";
+               } else {
+                   console.log(json);
+                   document.getElementById("cart_quantity").textContent = json.qty;
+                   location.reload();
+               }
+           },
+           error: function(xhr, errmsg, err){
+               console.log(xhr.status + ": " + xhr.responseText);
+           },
+       });
+   });
+ </script>
+ 
+ {% endblock content %}
+ 
