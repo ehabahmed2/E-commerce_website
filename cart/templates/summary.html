@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+        {% block content %}
+        <!-- Header-->
+        <header class="bg-dark py-5 header-animation">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Your card items....</p>
+                </div>
+            </div>
+        </header>
+        
+
+        <section class="py-5">
+            <div class="container px-4 px-lg-5 mt-5">
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    
+                    {% if cart_products %}
+
+                        {% for product in cart_products %}
+                        {% if product.is_sale == True %}
+
+                        <div class="col mb-5">
+                            <div class="card h-100 card-hover">
+                                <!-- Sale Badge -->
+                                <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                                
+                                <!-- Product image-->
+                                <img class="card-img-top" src="{{product.image.url}}" alt="Product image" />
+                                
+                                <!-- Product details-->
+                                <div class="card-body p-4 text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{product.product_name}}</h5>
+                        
+                                    <!-- Product price-->
+                                    <p class="mb-0">
+                                        <span class="text-muted text-decoration-line-through">{{product.price}}</span>
+                                    </p>
+                                    <p class="fw-bold">{{product.sale_price}}</p>
+                        
+                                    <!-- Amount selection (styled better) -->
+                                    <div class="row justify-content-center align-items-center mb-3">
+                                        <div class="col-md-6">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <!-- Label -->
+                                                <label for="item-count" class="fw-bold me-2">Amount</label>
+                                                <!-- Dropdown selection -->
+                                                <select class="form-select form-select-sm w-auto" id="item-count">
+                                                    <!--loop through the items to get the quntites selected-->
+                                                    {% for key, value in quantities.items %}
+                                                        {% if key == product.id|slugify %}
+                                                        <option selected>
+                                                            {{value}}
+                                                        </option>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                    </option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center">
+                                        <button class="btn btn-warning delete-item" data-product-id="{{ product.id }}">Delete</button>
+                                        <button class="btn btn-warning update-item" data-product-id="{{ product.id }}" data-quantity-id="item-count">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% else %}
+                        <div class="col mb-5">
+                            <div class="card h-100 card-hover">
+                                <!-- Product image-->
+                                <img class="card-img-top" src="{{product.image.url}}" alt="Product image" />
+                                
+                                <!-- Product details-->
+                                <div class="card-body p-4 text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{product.product_name}}</h5>
+                        
+                                    <!-- Product price-->
+                                    <p class="mb-0">
+                                        <span class="fw-bold">{{product.price}}</span>
+                                    </p>
+                        
+                                    <!-- Amount selection (styled better) -->
+                                    <div class="row justify-content-center align-items-center mb-3">
+                                        <div class="col-md-6">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <!-- Label -->
+                                                <label for="item-count" class="fw-bold me-2">Amount</label>
+                                                <!-- Dropdown selection -->
+                                                <select class="form-select form-select-sm w-auto" id="item-count">
+                                                        <!--loop through the items to get the quntites selected-->
+                                                        {% for key, value in quantities.items %}
+                                                            {% if key == product.id|slugify %}
+                                                            <option selected>
+                                                                {{value}}
+                                                            </option>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Product actions-->
+                                <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                    <div class="text-center">
+                                        <button class="btn btn-warning delete-item" data-product-id="{{ product.id }}">Delete</button>
+                                        <button class="btn btn-warning update-item" data-product-id="{{ product.id }}" data-quantity-id="item-count">Update</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    <div class="container px-4 px-lg-5 mt-5 text-center">
+                        <p class="display-4  mt-4" style="font-size: 24px; font-weight: 500; color: #555;">
+                            Nothing in the cart yet...
+                        </p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% if cart_products %}
+                <div class="total-container mt-5 text-center">
+                    <h3>Total: <span class="fw-bold">{{totals}}</span></h3> <!-- Update the total dynamically -->
+                </div>
+                {% endif %}
+            </div>
+        </section>
+
+
+        <script>
+            // Delete Cart Function
+            $(document).on('click', '.delete-item', function(e){
+                e.preventDefault();
+                
+                // Get the product ID from the data attribute
+                var product_id = $(this).data('product-id');
+                
+                console.log('This is the product ID:');
+                console.log(product_id);  // Log the product ID for debugging
+                
+                if (product_id === undefined) {
+                    console.error('Product ID is undefined!');  // Error message in case it's undefined
+                    return;  // Prevent further execution
+                }
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'cart_delete' %}",
+                    data: {
+                        product_id: product_id,  // Use the correct product ID
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post',
+                    },
+                    success: function(json){
+                        // Handle success response
+                        console.log('Product successfully deleted');
+                        // Remove the product from the DOM
+                        location.reload();
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);  // Log error for debugging
+                    },
+                });
+            });
+
+            // Update Function
+            $(document).on('click', '.update-item', function(e){
+                e.preventDefault();
+                
+                // Get product ID and the selected quantity
+                var product_id = $(this).data('product-id');
+                var quantity = $(this).closest('.card').find('#item-count').val();
+                
+                console.log('Product ID:', product_id, 'Selected Quantity:', quantity);
+                
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'cart_update' %}",  // You will need to create this URL pattern
+                    data: {
+                        product_id: product_id,
+                        quantity: quantity,  // Send the updated quantity
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        action: 'post',
+                    },
+                    success: function(json){
+                        console.log('Product quantity updated');
+                        location.reload();
+                    },
+                    error: function(xhr, errmsg, err){
+                        console.log(xhr.status + ": " + xhr.responseText);  // Log error for debugging
+                    },
+                });
+            });
+            
+          </script>
+{% endblock content %}

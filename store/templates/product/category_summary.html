@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+    {% block content %}
+    <!-- Header-->
+    <header class="bg-dark py-5 header-animation">
+        <div class="container px-4 px-lg-5 my-5">
+            <div class="text-center text-white">
+                <h1 class="display-4 fw-bolder">List of Categories</h1>
+                <p class="lead fw-normal text-white-50 mb-0">ordered place</p>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container-fluid mt-3 mb-3">
+        <div class="row g-2">
+            {% for category in categories %}
+            <div class="col-md-4 card-hover">
+                <div class="card">
+                    <!-- Category Image -->
+                    <img src="{{category.image.url}}" class="img-fluid" alt="Category Image">
+    
+                    <div class="product-detail-container p-2">
+                        <!-- Category Title with Link -->
+                        <h6 class="mb-2">
+                            <a href="{% url "category" category%}" class="text-decoration-none">{{category}}</a>
+                        </h6>
+    
+                        <!-- Short Description -->
+                        <p>{{category.description}}</p>
+    
+                        <!-- Favorite Icon -->
+                        <div class="wishlist">
+                            <i class="fa fa-heart"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+
+
+{% endblock  %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- Header -->
+<header class="bg-dark py-5 header-animation">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Welcome to Hoba Store</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Saving money, buying stuff!</p>
+        </div>
+    </div>
+</header>
+<!-- Section -->
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for product in products %}
+            {% if product.is_sale == True %}
+            <div class="col mb-5">
+                <div class="card h-100 card-hover">
+                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <!-- Product image -->
+                    <img class="card-img-top" src="{{product.image.url}}" alt="..." />
+                    <!-- Product details -->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name -->
+                            <h5 class="fw-bolder">{{product.product_name}}</h5>
+                            <!-- Product price -->
+                            <strike>{{product.price}}</strike>
+                            <br>
+                            <span class="text-danger">{{product.sale_price}}</span>
+                        </div>
+                    </div>
+                    <!-- Product actions -->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-danger mt-auto" href="{% url 'product' product.id %}">View Product</a></div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col mb-5">
+                <div class="card h-100 card-hover">
+                    <!-- Product image -->
+                    <img class="card-img-top" src="{{product.image.url}}" alt="..." />
+                    <!-- Product details -->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name -->
+                            <h5 class="fw-bolder">{{product.product_name}}</h5>
+                            <!-- Product price -->
+                            <span class="text-primary">{{product.price}}</span>
+                        </div>
+                    </div>
+                    <!-- Product actions -->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center"><a class="btn btn-outline-primary mt-auto" href="{% url 'product' product.id %}">View Product</a></div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+<!-- Adding some custom css animation -->
+<style>
+    /* Header Animation */
+    .header-animation h1 {
+        animation: fadeInUp 2s ease-out;
+    }
+    .header-animation p {
+        animation: fadeInUp 2.5s ease-out;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Card Hover Effect */
+    .card-hover {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none;
+    }
+    .card-hover:hover {
+        transform: translateY(-10px);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Button Styles */
+    .btn-outline-danger, .btn-outline-primary {
+        border-width: 2px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-outline-danger:hover, .btn-outline-primary:hover {
+        background-color: #ff0000;
+        color: #fff;
+    }
+    .btn-outline-primary:hover {
+        background-color: #007bff;
+        color: #fff;
+    }
+</style>
+
+{% endblock content %}
