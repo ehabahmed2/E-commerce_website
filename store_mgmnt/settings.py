@@ -28,6 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['e-commerce-website-self-ten.vercel.app']
 
 
+
 # Application definition
 
 INSTALLED_APPS = [
