@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Header-->
-<header class="bg-dark py-5">
+<header class="bg-dark py-5 mb-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
             <h1 class="display-4 fw-bolder">Profile</h1>
@@ -16,8 +16,11 @@
         {% csrf_token %}
         {{ user_form.as_p }} 
         <button type="submit" class="btn btn-secondary w-100">Update Profile</button>
-
     </form>
+    <div class="mt-3 text-center">
+        <p>Want to change the password?</p>
+        <a class="btn btn-link" href="{% url 'update_password' %}">Change password here</a>
+    </div>
     </div>
 </div>
 

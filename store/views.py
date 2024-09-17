@@ -3,7 +3,7 @@ from .models import Product, Category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegisterUser, UpdateUserForm
+from .forms import RegisterUser, UpdateUserForm, UpdatePassword
 
 
 # Create your views here.
@@ -82,7 +82,6 @@ def update_user(request):
     if request.user.is_authenticated: # check if current user is logged in
         current_user = User.objects.get(id=request.user.id) # get current user unique id
         user_form = UpdateUserForm(request.POST or None, instance=current_user) # get the form for the user (using their id)
-        
         if user_form.is_valid():
             user_form.save()
             login(request, current_user) # to log the user in again after saving info
@@ -91,3 +90,28 @@ def update_user(request):
         return render(request, 'users/update_user.html', {'user_form': user_form})
     messages.error(request, "You must be logged first!")
     return redirect('login')
+
+def update_password(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        # did they fill in the form
+        if request.method == 'POST':
+            # get the form 
+            form = UpdatePassword(current_user, request.POST)
+            # is form valid 
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Password has been updated!')
+                login(request, current_user)
+                return redirect('home')
+            else: 
+                # return a msg with error
+                for error in list(form.errors.valuesx()):
+                    messages.error(request, error )
+                    return redirect('update_password')
+        else:
+            form = UpdatePassword(current_user, request.POST)
+            return render(request, 'users/update_password.html', {'password_form': form})
+    else:
+        messages.error(request, 'You must be logged in first!!')
+        return redirect('login')
