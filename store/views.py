@@ -4,14 +4,13 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegisterUser, UpdateUserForm, UpdatePassword, UserInfoForm
-
+from django.db.models import Q
 
 # Create your views here.
 #product page
 def product(request, pk):
     product = Product.objects.get(id=pk)
     return render(request, 'product/product.html', {'product': product})
-
 
 # Categories
 def category(request, sk):
@@ -120,7 +119,7 @@ def update_password(request):
         return redirect('login')
 
 # Updating user other information
-def update_info(request):    
+def update_info(request): 
     if request.user.is_authenticated: # check if current user is logged in
         current_user = Profile.objects.get(user__id=request.user.id) # get current user unique id to match the user's id
         form = UserInfoForm(request.POST or None, instance=current_user) # get the form for the user (using their id)
@@ -131,3 +130,16 @@ def update_info(request):
         return render(request, 'users/update_info.html', {'form': form})
     messages.error(request, "You must be logged first!")
     return redirect('update_info')
+
+
+def search(request):
+    if request.method == 'GET':
+        searched = request.GET['searched']
+        searched = Product.objects.filter(Q(product_name__icontains=searched) | Q(description__icontains=searched))
+        if not searched:
+            messages.info(request, 'No results found!')
+        return render(request, 'product/search.html', {'searched': searched})
+    else:
+        return render(request, 'product/search.html', {})
+
+
