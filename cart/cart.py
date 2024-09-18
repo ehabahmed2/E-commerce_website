@@ -1,9 +1,11 @@
-from store.models import Product
+from store.models import Product, Profile
 
 
 class Cart:
     def __init__(self, request):
         self.session = request.session
+        # get the request
+        self.request = request
         cart = self.session.get('cart')
         if not cart:
             # Save an empty cart in the session if it doesn't exist
@@ -17,13 +19,29 @@ class Cart:
         if product_id in self.cart:
             # Update its qty
             self.cart[product_id] = int(product_qty)
-
         else:
-            # self.cart[product_id] = {'price': str(product.price)}
             self.cart[product_id] = int(product_qty)
-        
         self.session.modified = True
+        # Get current user
+        current_user = Profile.objects.filter(user__id=self.request.user.id)
+        # convert current id {'3': 1, '4': 2} to something like this {"3":1, "4", 2} as json workds with double quotations only
+        json_cart = str(self.cart)
+        json_cart = json_cart.replace("\'","\"")
+        # Save this into Profile model
+        current_user.update(old_cart=str(json_cart))
     
+    # To add the products again after logging in
+    def db_add(self, product, quantity):
+        product_id = str(product)
+        product_qty = str(quantity)
+        
+        if product_id in self.cart:
+            # Update its qty
+            self.cart[product_id] = int(product_qty)
+        else:
+            self.cart[product_id] = int(product_qty)
+        self.session.modified = True
+        
     # To check length of carts
     def __len__(self):
         return len(self.cart)
@@ -48,6 +66,14 @@ class Cart:
         if product_id in self.cart:
             del self.cart[product_id]
             self.session.modified = True
+            
+            # Get current user
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # convert current id {'3': 1, '4': 2} to something like this {"3":1, "4", 2} as json workds with double quotations only
+            json_cart = str(self.cart)
+            json_cart = json_cart.replace("\'","\"")
+            # Save this into Profile model
+            current_user.update(old_cart=str(json_cart))
         else:
             print('Product not found in cart')
 
