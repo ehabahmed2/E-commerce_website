@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Product, Category
+from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import RegisterUser, UpdateUserForm, UpdatePassword
+from .forms import RegisterUser, UpdateUserForm, UpdatePassword, UserInfoForm
 
 
 # Create your views here.
@@ -67,10 +67,11 @@ def register_user(request):
         form = RegisterUser(request.POST)
         if form.is_valid():
             user = form.save()  # The UserCreationForm automatically saves the hashed password
+            Profile.objects.create(user=user)  # Create a profile for the new user
             login(request, user)  # Automatically log in the user
             username = form.cleaned_data.get('username')
-            messages.success(request, f"Account created for {username}!")
-            return redirect('home')  # Redirect to home or another page after registration
+            messages.success(request, f"Account created for {username}, Kindly complete the User's info!")
+            return redirect('update_info')  # Redirect to home or another page after registration
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
@@ -117,3 +118,16 @@ def update_password(request):
     else:
         messages.error(request, 'You must be logged in first!!')
         return redirect('login')
+
+# Updating user other information
+def update_info(request):    
+    if request.user.is_authenticated: # check if current user is logged in
+        current_user = Profile.objects.get(user__id=request.user.id) # get current user unique id to match the user's id
+        form = UserInfoForm(request.POST or None, instance=current_user) # get the form for the user (using their id)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your details are saved successfully!")
+            return redirect('home')
+        return render(request, 'users/update_info.html', {'form': form})
+    messages.error(request, "You must be logged first!")
+    return redirect('update_info')

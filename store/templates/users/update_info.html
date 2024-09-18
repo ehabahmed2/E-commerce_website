@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Header-->
+<header class="bg-dark py-5 mb-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Update Info</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Update and edit profile info...</p>
+        </div>
+    </div>
+</header>
+<div class='col-md-6 offset-md-3'>
+    <div class='card shadow-sm p-4'>
+        <form method="POST" action='{% url "update_info" %}'>
+            {% csrf_token %}
+            {{ form.as_p }} 
+            <button type="submit" class="btn btn-secondary w-100">Update Profile</button>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
+

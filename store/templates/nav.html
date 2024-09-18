@@ -8,11 +8,18 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'update_user' %}">Profile</a></li>
                 
                 
                 {% if user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Log out</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'update_user' %}">Profile</a></li>
+                        <li><a class="dropdown-item" href="{% url "logout"%}">Log out</a></li>
+                    </ul>
+                </li>
+
+
                 {% else %}
                 <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Log in</a></li>
                 {% endif %}

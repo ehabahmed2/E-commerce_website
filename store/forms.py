@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, SetPasswordForm
+from .models import Profile
 
 class RegisterUser(UserCreationForm):
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control', 'name':'first_name'}))
@@ -13,7 +14,6 @@ class RegisterUser(UserCreationForm):
         super(RegisterUser, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
-
 
 
 class UpdateUserForm(UserChangeForm):
@@ -39,5 +39,12 @@ class UpdatePassword(SetPasswordForm):
             field.widget.attrs['class'] = 'form-control'
             
 
-
-
+class UserInfoForm(forms.ModelForm):
+    phone = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Phone Number'}), required=False)
+    address = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Address'}), required=False)
+    city = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'City'}), required=False)
+    governorate = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Governorate or State'}), required=False)
+    
+    class Meta: 
+        model = Profile
+        fields = ('phone', 'address', 'city', 'governorate',)
