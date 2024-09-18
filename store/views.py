@@ -50,20 +50,22 @@ def login_user(request):
         if user is not None:
             login(request, user)
             
-            # add the items to cart
-            # get current user profile
-            current_user = Profile.objects.get(user__id=request.user.id)
-            # get their saved cart from database
-            saved_cart = current_user.old_cart
-            #convert database string to a dictionary
-            if saved_cart:
-                converted_cart = json.loads(saved_cart)
-                # Add loaded cart dic to our session
-                cart = Cart(request)
-                # loop through item and add items to db
-                for key, val in converted_cart.items():
-                    cart.db_add(product=key, quantity=val)
-            
+            try:
+                # add the items to cart
+                # get current user profile
+                current_user = Profile.objects.get(user__id=request.user.id)
+                # get their saved cart from database
+                saved_cart = current_user.old_cart
+                #convert database string to a dictionary
+                if saved_cart:
+                    converted_cart = json.loads(saved_cart)
+                    # Add loaded cart dic to our session
+                    cart = Cart(request)
+                    # loop through item and add items to db
+                    for key, val in converted_cart.items():
+                        cart.db_add(product=key, quantity=val)
+            except:
+                pass
             messages.success(request, "You're logged in!")
             return redirect('home')
         else: 
