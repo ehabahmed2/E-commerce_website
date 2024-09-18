@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'unfold',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -41,6 +42,12 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'cart.apps.CartConfig',
 ]
+
+# unfold design
+UNFOLD = {
+    'SITE_TITLE': "E-Commerce Site",
+    'SITE_HEADER': 'E-Commerce',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

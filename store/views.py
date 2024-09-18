@@ -75,6 +75,7 @@ def register_user(request):
             messages.error(request, 'Please correct the errors below.')
     else:
         form = RegisterUser()
+        messages.info(request, 'not post')
     return render(request, 'users/register.html', {'form': form})
 
 # Update user profile
@@ -106,9 +107,10 @@ def update_password(request):
                 return redirect('home')
             else: 
                 # return a msg with error
-                for error in list(form.errors.valuesx()):
+                for error in list(form.errors.values()):
                     messages.error(request, error )
                     return redirect('update_password')
+                
         else:
             form = UpdatePassword(current_user, request.POST)
             return render(request, 'users/update_password.html', {'password_form': form})

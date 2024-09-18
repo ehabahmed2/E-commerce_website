@@ -1,6 +1,30 @@
 from django.db import models
 import datetime
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 # Create your models here.
+
+
+# create a user profile
+class Profile(models.Model):
+    # Create a user from current user that logged in 
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # Get time and date (optional)
+    date_modified = models.DateTimeField(User, auto_now=True)
+    phone = models.CharField(max_length=20, blank=True)
+    address = models.CharField(max_length=200, blank=True)
+    city = models.CharField(max_length=200, blank=True)
+    governorate = models.CharField(max_length=200, blank=True)
+    
+    def __str__(self):
+        return self.user.username
+    
+# Create a user profile func to save profile when sign up
+def create_profile(sender, instance, created, **kwargs):
+    if created: 
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
 
 
 # Catagories of the product
