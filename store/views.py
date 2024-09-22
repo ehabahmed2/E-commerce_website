@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegisterUser, UpdateUserForm, UpdatePassword, UserInfoForm
+
+from django.http import HttpResponse
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 from django.db.models import Q
 from cart.cart import Cart
 import json
@@ -141,12 +145,27 @@ def update_password(request):
 def update_info(request): 
     if request.user.is_authenticated: # check if current user is logged in
         current_user = Profile.objects.get(user__id=request.user.id) # get current user unique id to match the user's id
+        # get current user's shipping info 
+        
+        # Get current user's shipping info or create a new one if it doesn't exist
+        try:
+            shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+        except ShippingAddress.DoesNotExist:
+            shipping_user = ShippingAddress(user=request.user)
+        
+        # get original user form
         form = UserInfoForm(request.POST or None, instance=current_user) # get the form for the user (using their id)
-        if form.is_valid():
+        # get shipping form
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+        # Print the shipping user ID for debugging
+        print(f"Shipping ID: {shipping_user.id}")
+        
+        if form.is_valid() and shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, "Your details are saved successfully!")
             return redirect('home')
-        return render(request, 'users/update_info.html', {'form': form})
+        return render(request, 'users/update_info.html', {'form': form, 'shipping_form': shipping_form})
     messages.error(request, "You must be logged first!")
     return redirect('update_info')
 
