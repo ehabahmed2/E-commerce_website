@@ -5,7 +5,6 @@ from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib import messages
 from django.contrib.auth.models import User
 
-# Create your views here.
 def payment(request):
     return render(request, 'payment.html', {})
 

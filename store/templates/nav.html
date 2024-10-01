@@ -28,9 +28,10 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li><a class="dropdown-item" href="{% url "category_summary" %}">All Products</a></li>
-                        <li><a class="dropdown-item" href="{% url "category" 'Books'%}">Books</a></li>
-                        <li><a class="dropdown-item" href="{% url "category" 'Tech-Tools' %}">Tech Tools</a></li>
-                        <li><a class="dropdown-item" href="{% url "category" 'Phones' %}">Phones</a></li>
+                        <li><a class="dropdown-item" href="{% url "category" 'Accessories & Electronics'%}">Accessories & Electronics</a></li>
+                        <li><a class="dropdown-item" href="{% url "category" 'Health-&-Fitness' %}">Health & Fitness</a></li>
+                        <li><a class="dropdown-item" href="{% url "category" 'Electronics-&-Audio' %}">Electronics & Audio</a></li>
+                        <li><a class="dropdown-item" href="{% url "category" 'Supplies' %}">Supplies</a></li>
                     </ul>
                 </li>
                 <li class = 'active nav-link'>{{user.username}}</li>
