@@ -62,18 +62,22 @@
                             <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-warning m-4">Apply</button>
                             <h3 class = 'm-3'>Total: <span class="fw-bold">{{totals}}</span></h3> <!-- Update the total dynamically -->
                         </div>
-                        <div class = 'card rounded-3 mb-4'>
-                            <div class='card-body p-4'>
-                            <span>Shipping address</span>   
-                            {{shipping_form.as_p}}
+                        <form method='POST' action ='{% url "billing_info" %}'>  
+                            <div class = 'card rounded-3 mb-4'>
+                                <div class='card-body p-4'>
+                                <span>Shipping address</span> 
+                                
+                                {% csrf_token %}
+                                {{shipping_form.as_p}}
+                                </div>
+                            </div> 
+                            <div class="card">
+                            <div class="card-body row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                                <button class="btn btn-warning btn-block btn-lg m-2" type='submit'>Proceed to Pay</button>
+                                <a href='{% url "cart_summary" %}' class="btn btn-secondary btn-block btn-lg m-2">Update items</a>
                             </div>
-                        </div> 
-                        <div class="card">
-                        <div class="card-body row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                            <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning btn-block btn-lg m-2">Proceed to Pay</button>
-                            <a href='{% url "cart_summary" %}' class="btn btn-secondary btn-block btn-lg m-2">Update items</a>
-                        </div>
-                        </div>
+                            </div>
+                        </form>  
                     </div>
                     </div>
                 </div>

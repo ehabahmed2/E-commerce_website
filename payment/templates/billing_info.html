@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+        {% block content %}
+        <!-- Header-->
+        <header class="bg-dark py-5 header-animation">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Billing info</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Enter the payment details</p>
+                </div>
+            </div>
+        </header>
+        
+            <section class="h-100">
+                <div class="container h-100 py-5">
+                    <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col-10">
+                        <div class = 'card rounded-3 mb-4'>
+                            <div class='card-body p-4'>
+                            <h3 class = 'mb-4'>Total: <span class="fw-bold">{{totals}}</span></h3> <!-- Update the total dynamically -->
+                            <p class='text-muted'>Shipping address:</p>
+                            <p>Shipping Name: {{shipping_info.shipping_full_name}}</p>
+                            <p>Email: {{shipping_info.shipping_email}}</p>
+                            <p>Address 1: {{shipping_info.shipping_address1}}</p>
+                            <p>Address 2: {{shipping_info.shipping_address2}}</p>
+                            <p>City: {{shipping_info.shipping_city}}</p>
+                            <p>state: {{shipping_info.shipping_state}}</p>
+                            <p>Zip code: {{shipping_info.shipping_zipcode}}</p>
+                            <p>Country: {{shipping_info.shipping_country}}</p>
+                            </div>
+                        </div> 
+
+                        <form method='POST' action='{% url "process_order" %}'>
+                            {% csrf_token %}
+                            <div class = 'card rounded-3 mb-4'>
+                                <div class='card-body p-4'>
+
+                                {{payment_form.as_p}}
+                                </div>
+                            </div>  
+                            <div class="card">
+                                <div class="card-body row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                                    <button  type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-warning btn-block btn-lg m-2" >Pay Now</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                    </div>
+                </div>
+            </section>  
+
+
+
+
+{% endblock content %}
