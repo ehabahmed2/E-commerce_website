@@ -23,11 +23,13 @@ def checkout(request):
         else: 
             try:
                 shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+                if ShippingAddress.objects.get(user__id=request.user.id):
+                    redirect('billing_info')
             except ShippingAddress.DoesNotExist:
                 shipping_user = ShippingAddress(user=request.user)
+            
+            
             shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
-            if ShippingAddress.objects.get(user__id=request.user.id):
-                redirect('billing_info')
             return render(request, 'checkout.html', {'cart_products': cart_products, 'quantities': quantities, 'totals': totals, 'shipping_form': shipping_form})
     else: 
         messages.error(request, 'Access denied')
