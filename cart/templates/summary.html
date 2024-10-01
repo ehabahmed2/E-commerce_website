@@ -143,6 +143,7 @@
                 {% if cart_products %}
                 <div class="total-container mt-5 text-center">
                     <h3>Total: <span class="fw-bold">{{totals}}</span></h3> <!-- Update the total dynamically -->
+                    <a href='{% url "checkout" %}' class='btn btn-success'>Checkout</a>
                 </div>
                 {% endif %}
             </div>
