@@ -18,8 +18,10 @@ class UserAdmin(admin.ModelAdmin):
     model = User
     fields = ['username', 'email', ]
     inlines = [ProfileMix]
+
 # unregister old way
 admin.site.unregister(User)
+
 # register with new way
 admin.site.register(User, UserAdmin)
 

@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from store.models import Product
+from django.db.models.signals import post_save, pre_save
+from django.dispatch import receiver
+import datetime
 
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
@@ -29,10 +32,23 @@ class Order(models.Model):
     shipping_address = models.TextField(max_length=15000)
     amount_paid = models.DecimalField(max_digits=15, decimal_places=2)
     date_ordered = models.DateField(auto_now_add=True)
-    
+    shipped = models.BooleanField(default=False)
+    shipped_date = models.DateTimeField(blank=True, null=True)
     # show the order id in admin section
     def __str__(self):
         return f'Order: {str(self.id)}'
+
+
+# Auto add a shipping date
+@receiver(pre_save, sender=Order)
+def set_shipped_date(sender, instance, **kwargs):
+    if instance.pk:
+        now = datetime.datetime.now()
+        obj = sender._default_manager.get(pk=instance.pk)
+        if instance.shipped and not obj.shipped:
+            instance.shipped_date = now
+            
+        
 
 # Create order items model
 class OrderItem(models.Model):

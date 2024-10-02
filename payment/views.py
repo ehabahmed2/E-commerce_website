@@ -102,6 +102,11 @@ def process_order(request):
                     # Create order item
                     create_order_item = OrderItem(order_id=order_id, product_id=product_id, user_id=user.id, quantity=val, price=price) 
                     create_order_item.save()
+            
+        # Delete the cart
+        for key in list(request.session.keys()):
+            if key == 'cart': # we did this way back in cart.py when we were saving session
+                del request.session[key]
                 
         messages.success(request, 'Payment is processing now')
         return render(request, 'process_order.html', {})
