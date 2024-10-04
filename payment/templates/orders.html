@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<header class="bg-dark py-5 mb-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shipping Dashboard</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Not shipped items...</p>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title">Order Details</h5>
+                </div>
+                <div class="card-body">
+                    <p><strong>Order ID:</strong> {{ order.id }}</p>
+                    <p><strong>Customer Name:</strong> {{ order.full_name }}</p>
+                    <p><strong>Email:</strong> {{ order.email }}</p>
+                    <p><strong>Shipping Address:</strong> {{ order.shipping_address }}</p>
+                    <p><strong>Amount Paid:</strong> £{{ order.amount_paid }}</p>
+                    <p><strong>Date Ordered:</strong> {{ order.date_ordered }}</p>
+                    <p><strong>Shipped:</strong> {{ order.shipped }}</p>
+                    {% if order.shipped %}
+                    <p><strong>Shipped Date:</strong> {{ order.shipped_date }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card mb-4">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="card-title">Order Items</h5>
+                </div>
+                <div class="card-body">
+                    {% for item in items %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p><strong>Product:</strong> {{ item.product.product_name }}</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                                </div>
+                                <div class="col-md-3 text-right">
+                                    <p><strong>Price:</strong> £{{ item.price }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
