@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
@@ -88,6 +88,8 @@ def process_order(request):
         # Get order ID
         order_id = create_order.pk
         # Get product info
+        order_items = []
+        
         for product in cart_products:
             # get id
             product_id = product.id
@@ -97,21 +99,43 @@ def process_order(request):
             else: 
                 price = product.price
             # Get quantity
+            order_items = []
+            
             for key, val in quantities().items():
                 if int(key) == product.id:
                     # Create order item
                     create_order_item = OrderItem(order_id=order_id, product_id=product_id, user_id=user.id, quantity=val, price=price) 
                     create_order_item.save()
-            
+                    order_items.append(create_order_item)
         # Delete the cart
         for key in list(request.session.keys()):
             if key == 'cart': # we did this way back in cart.py when we were saving session
                 del request.session[key]
                 
-        messages.success(request, 'Payment is processing now')
-        return render(request, 'process_order.html', {})
+        
+        order = get_object_or_404(Order, pk=order_id)
+        order_items = OrderItem.objects.filter(order=order)
+        messages.success(request, 'Order placed!')
+        return render(request, 'process_order.html', {'order_items': order_items, 'order_created': create_order})
     else:
         messages.error(request, 'Access denied')
         return redirect('home')
 
+# Creating a shipping dashboard
+def shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(shipped=True)
 
+        return render(request, 'shipped_dash.html', {'orders': orders})
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('home')
+
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        orders = Order.objects.filter(shipped=False)
+        
+        return render(request, 'not_shipped_dash.html', {'orders': orders})
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('home')

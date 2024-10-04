@@ -1,1 +1,78 @@
-<h1>Process Order</h1>
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header" style="background-color: #FFA500; color: #fff;">
+            <h2 class="card-title">Thank You for Your Order!</h2>
+        </div>
+        <div class="card-body" style="background-color: #f8f9fa;">
+            <h5 class="card-title">Purchase Receipt</h5>
+            <div class="row mb-3">
+                <div class="col-6">
+                    <strong>Date:</strong> <span id="details">{{ order_created.date_ordered }}</span>
+                </div>
+                <div class="col-6 text-right">
+                    <strong>Order No:</strong> <span id="details">{{order_created.pk}}</span>
+                </div>
+            </div>
+            <h5 class="card-title">Order Items</h5>
+            <div class="row">
+                {% for item in order_items %}
+                <div class="col-md-12 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Item:</strong> {{ item.product.product_name }}
+                                </div>
+                                <div class="col-3">
+                                    <strong>Quantity:</strong> {{ item.quantity }}
+                                </div>
+                                <div class="col-3 text-right">
+                                    <strong>Price:</strong> &pound;{{ item.price }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% comment %} <div class="row mb-3">
+                <div class="col-9">
+                    <strong>Shipping:</strong>
+                </div>
+                <div class="col-3 text-right">
+                    <strong>shipping fees:</strong> Free
+                </div>
+            </div> {% endcomment %}
+            <div class="row mb-3">
+                <div class="col-9">
+                    <strong>Total:</strong>
+                </div>
+                <div class="col-3 text-right">
+                    <strong>{{order_created.amount_paid}}</strong>
+                </div>
+            </div>
+            <div class="tracking mb-3">
+                <h5 class="card-title">Tracking Order</h5>
+                <ul class="list-group">
+                    <li class="list-group-item active" style="background-color: #FFA500; border-color: #FFA500;">Ordered</li>
+                    <li class="list-group-item">Shipped</li>
+                    <li class="list-group-item">On the way</li>
+                    <li class="list-group-item">Delivered</li>
+                </ul>
+            </div>
+            <div class="text-center">
+                <a href="#" class="btn btn-primary" style="background-color: #FFA500; border-color: #FFA500;">Track Your Order</a>
+            </div>
+        </div>
+        <div class="card-footer text-muted text-center" style="background-color: #e9ecef;">
+            <div class="row">
+                <div class="">
+                    Need help? Please <a href="#" style="color: #FFA500;">contact us</a>.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

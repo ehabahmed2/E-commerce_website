@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    .table thead th {
+        background-color: #343a40;
+        color: #fff;
+    }
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+<header class="bg-dark py-5 mb-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Shipping Dashboard</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Not shipped items...</p>
+        </div>
+    </div>
+</header>
+<div clas='container'>
+    <center>
+        <div class="container mt-5">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Order ID</th>
+                            <th scope="col">Full Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Shipping Address</th>
+                            <th scope="col">Amount Paid</th>
+                            <th scope="col">Date Ordered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Example row -->
+                        {% for order in orders %}
+                        <tr>
+                            <td>{{order.id}}</td>
+                            <td>{{order.full_name}}</td>
+                            <td>{{order.email}}</td>
+                            <td>{{order.shipping_address}}</td>
+                            <td>{{order.amount_paid}}</td>
+                            <td>{{order.date_ordered}}</td>
+                        </tr>
+                        {% endfor %}
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </center>
+</div>
+{% endblock content %}
+
