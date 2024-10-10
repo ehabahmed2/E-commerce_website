@@ -30,6 +30,7 @@
                             <th scope="col">Shipping Address</th>
                             <th scope="col">Amount Paid</th>
                             <th scope="col">Date Ordered</th>
+                            <th scope="col">Shipped Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -42,6 +43,13 @@
                             <td>{{order.shipping_address}}</td>
                             <td>{{order.amount_paid}}</td>
                             <td>{{order.date_ordered}}</td>
+                            <td>
+                                <form method ='POST'>
+                                    {% csrf_token %}
+                                    <input type='hidden' name='num' value={{order.id}}>
+                                    <button type='submit' class='btn btn-primary btn-sm'>Mark shipped</button>
+                                </form>
+                            </td>
                         </tr>
                         {% endfor %}
                         <!-- Add more rows as needed -->

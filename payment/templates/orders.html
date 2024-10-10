@@ -25,6 +25,20 @@
                     <p><strong>Shipped:</strong> {{ order.shipped }}</p>
                     {% if order.shipped %}
                     <p><strong>Shipped Date:</strong> {{ order.shipped_date }}</p>
+                    <form method ='POST'>
+                        {% csrf_token %}
+                        <input type='hidden' name='shipping_status' value ='false'>
+                        <button type='submit' class='btn btn-danger'> Mark as not shipped</button>
+                    </form>
+                    {% else %}
+
+                    <form method='POST'>
+                        {% csrf_token %}
+                        <input type='hidden' name='shipping_status' value='true'>
+                        <button type='submit' class='btn btn-primary'>Mark as shipped</button>
+                    </form>
+                    
+
                     {% endif %}
                 </div>
             </div>
