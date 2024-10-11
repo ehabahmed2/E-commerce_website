@@ -142,10 +142,15 @@ def update_password(request):
         return redirect('login')
 
 # Updating user other information
+from django.core.exceptions import ObjectDoesNotExist
+
 def update_info(request): 
-    if request.user.is_authenticated: # check if current user is logged in
-        current_user = Profile.objects.get(user__id=request.user.id) # get current user unique id to match the user's id
-        # get current user's shipping info 
+    if request.user.is_authenticated:  # check if current user is logged in
+        try:
+            current_user = Profile.objects.get(user__id=request.user.id)  # get current user unique id to match the user's id
+        except Profile.DoesNotExist:
+            current_user = Profile(user=request.user)
+            current_user.save()
         
         # Get current user's shipping info or create a new one if it doesn't exist
         try:
@@ -154,7 +159,7 @@ def update_info(request):
             shipping_user = ShippingAddress(user=request.user)
         
         # get original user form
-        form = UserInfoForm(request.POST or None, instance=current_user) # get the form for the user (using their id)
+        form = UserInfoForm(request.POST or None, instance=current_user)  # get the form for the user (using their id)
         # get shipping form
         shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
         # Print the shipping user ID for debugging
@@ -166,7 +171,7 @@ def update_info(request):
             messages.success(request, "Your details are saved successfully!")
             return redirect('home')
         return render(request, 'users/update_info.html', {'form': form, 'shipping_form': shipping_form})
-    messages.error(request, "You must be logged first!")
+    messages.error(request, "You must be logged in first!")
     return redirect('update_info')
 
 
