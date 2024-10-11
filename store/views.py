@@ -98,7 +98,6 @@ def register_user(request):
             messages.error(request, 'Please correct the errors below.')
     else:
         form = RegisterUser()
-        messages.info(request, 'not post')
     return render(request, 'users/register.html', {'form': form})
 
 # Update user profile

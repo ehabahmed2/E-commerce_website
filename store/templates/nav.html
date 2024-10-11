@@ -51,17 +51,3 @@
     </div>
 </nav>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        var navLinks = document.querySelectorAll(".nav-link");
-        var currentUrl = window.location.href;
-
-        navLinks.forEach(function (link) {
-            if (link.href === currentUrl) {
-                link.classList.add("active");
-            } else {
-                link.classList.remove("active");
-            }
-        });
-    });
-</script>
