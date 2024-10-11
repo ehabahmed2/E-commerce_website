@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegisterUser, UpdateUserForm, UpdatePassword, UserInfoForm
+import datetime
 
 from django.http import HttpResponse
 from payment.forms import ShippingForm

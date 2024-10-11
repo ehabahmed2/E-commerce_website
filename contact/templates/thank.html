@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    body {
+        background-color: #f8f9fa; /* Light gray background */
+        color: #343a40; /* Dark gray text */
+    }
+    .content {
+        background-color: #ffffff; /* White background for content */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .btn-home {
+        background-color: #007bff;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+    }
+    .btn-home:hover {
+        background-color: #0056b3;
+        color: #ffffff;
+    }
+</style>
+
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Thank You!</h1>
+            <p class="lead fw-normal text-white-50 mb-0">We appreciate your feedback</p>
+        </div>
+    </div>
+</header>
+
+<div class="container mt-5">
+    <div class="content text-center">
+        <h1>Thank You!</h1>
+        <p>Your message has been received. We will get back to you shortly.</p>
+        <a href="{% url 'home' %}" class="btn-home mt-3">Return Home</a>
+    </div>
+</div>
+
+{% endblock content %}

@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'cart.apps.CartConfig',
     'payment.apps.PaymentConfig',
+    'contact.apps.ContactConfig',
     'whitenoise.runserver_nostatic',
 ]
 
@@ -86,6 +87,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 #adding processors
                 'cart.context_processors.cart',
+                'store.context_processors.current_year',  # Add this line
+
             ],
         },
     },
@@ -111,7 +114,7 @@ WSGI_APPLICATION = 'store_mgmnt.wsgi.application'
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'postgres',
 #         'USER': 'postgres',
-#         'PASSWORD': 'London#112233',
+#         'PASSWORD': '',
 #         'HOST': 'localhost',
 #         'PORT': '5432',
 #         'OPTIONS': {
@@ -185,3 +188,9 @@ MEDIA_URL = '/media/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
