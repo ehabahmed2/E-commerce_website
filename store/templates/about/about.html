@@ -1,25 +1,66 @@
 {% extends "base.html" %}
 {% block content %}
+<style>
+    body {
+        background-color: #f8f9fa; /* Light gray background */
+        color: #343a40; /* Dark gray text */
+    }
+    .navbar {
+        background-color: #007bff; /* Blue navbar */
+    }
+    .navbar-brand, .nav-link {
+        color: #ffffff !important; /* White text */
+    }
+    .content {
+        background-color: #ffffff; /* White background for content */
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    ul.custom-bullets {
+        list-style: none;
+        padding-left: 0;
+    }
+    ul.custom-bullets li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 10px;
+    }
+    ul.custom-bullets li::before {
+        content: '\2022'; /* Unicode for bullet point */
+        position: absolute;
+        left: 0;
+        color: #007bff; /* Blue bullet point */
+        font-size: 1.5em; /* Larger bullet point */
+        line-height: 1;
+    }
+</style>
+
 <header class="bg-dark py-5 mb-5">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">Who are we? </h1>
-            <p class="lead fw-normal text-white-50 mb-0">Don't wonder anymore mate, I am Hoba</p>
+            <h1 class="display-4 fw-bolder">Who are we?</h1>
+            <p class="lead fw-normal text-white-50 mb-0">About our E-commerce website</p>
         </div>
     </div>
 </header>
-<div clas='container'>
+<div class="container">
     <center>
-        <div class='col-8'>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil.</p>
-            <br>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil.</p>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eligendi sint autem sunt quae. Quas modi laboriosam quis sed consectetur eveniet repellendus, aperiam, facilis tempora optio in impedit fugiat molestias nihil.</p>
+        <div class="col-8">
+            <div class="content">
+                <h1>About Us</h1>
+                <p>Welcome to our online store, your one-stop destination for a diverse range of high-quality products. We are dedicated to providing you with the best shopping experience, offering a wide selection of items to meet all your needs.</p>
+                <h2>Our Categories:</h2>
+                <ul class="custom-bullets">
+                    <li><strong>All Products:</strong> Explore our entire collection of products, carefully curated to ensure quality and satisfaction.</li>
+                    <li><strong>Home & Office Essentials:</strong> Find everything you need to create a comfortable and efficient living and working space. From furniture to office supplies, we have it all.</li>
+                    <li><strong>Tech Gadgets & Accessories:</strong> Stay ahead with the latest in technology. Discover innovative gadgets and essential accessories that make your life easier and more enjoyable.</li>
+                    <li><strong>Fitness:</strong> Achieve your health and wellness goals with our range of fitness products. Whether you're a beginner or a seasoned athlete, we have the gear to support your journey.</li>
+                </ul>
+                <p>Our mission is to bring you the best products at competitive prices, backed by exceptional customer service. Thank you for choosing us as your trusted shopping partner.</p>
+            </div>
         </div>
     </center>
 </div>
 
 {% endblock content %}
-
