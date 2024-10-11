@@ -13,8 +13,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from django.contrib.messages import constants as message_constants
+from dotenv import load_dotenv
+import dj_database_url
 
 
+# load stuff
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,13 +28,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-7112tju$d6%8ns=n*w#i5f^*jwx$z$hh9f@*c3r66f$vylsjp2'
+# SECRET_KEY = 'django-insecure-7112tju$d6%8ns=n*w#i5f^*jwx$z$hh9f@*c3r66f$vylsjp2'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
+print(SECRET_KEY)
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+CSRF_TRUSTED_ORIGINS = []
 
 
 # Application definition
@@ -46,6 +52,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'cart.apps.CartConfig',
     'payment.apps.PaymentConfig',
+    'whitenoise.runserver_nostatic',
 ]
 
 # unfold design
@@ -62,6 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'store_mgmnt.urls'
@@ -95,14 +103,33 @@ WSGI_APPLICATION = 'store_mgmnt.wsgi.application'
 
 
 # Database
+
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
+# DATABASES = {
+#     'default': {
+#         #'ENGINE': 'django.db.backends.sqlite3',
+#         #'NAME': BASE_DIR / 'db.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'London#112233',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#         'OPTIONS': {
+#             'sslmode': 'require',
+#         }
+#     }
+    
+# }
+
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DB_PUBLIC_URL'),
+        conn_max_age=1800
+    )
 }
+
 
 
 # Password validation
@@ -140,12 +167,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'store_mgmnt/static')
     ]
 
+# white noise static stuff
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFileStorage'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
